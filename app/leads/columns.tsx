@@ -19,7 +19,7 @@ export type Customer = {
   email: string;
   name: string;
   quote: number;
-  responsible: "Craig" | "Katie" | "Mark";
+  responsible: "craig" | "katie" | "mark";
 };
 
 export const columns: ColumnDef<Customer>[] = [
@@ -117,11 +117,12 @@ export const columns: ColumnDef<Customer>[] = [
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(payment.id)}
             >
-              Copy payment ID
+              Copy row ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem>Update details</DropdownMenuItem>
+            <DropdownMenuItem>Delete lead</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
