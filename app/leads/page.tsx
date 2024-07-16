@@ -1,6 +1,6 @@
 import { columns, Customer } from "./columns";
 import { DataTable } from "./data-tables";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import supabase from "@/utils/supabase";
 
 async function getData(): Promise<Customer[]> {
@@ -10,7 +10,7 @@ async function getData(): Promise<Customer[]> {
     console.error("Error fetching data:", error);
     return [];
   }
-
+  console.log("Fetched data:", data);
   return data as Customer[];
 }
 
@@ -20,9 +20,6 @@ export default async function Leads() {
   return (
     <div className="container max-w-6xl py-6">
       <Card className="p-4">
-        <CardHeader>
-          <CardTitle className="text-center">Sales leads</CardTitle>
-        </CardHeader>
         <DataTable columns={columns} data={data} />
       </Card>
     </div>

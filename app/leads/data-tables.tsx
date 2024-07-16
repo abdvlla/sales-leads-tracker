@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { MixerHorizontalIcon } from "@radix-ui/react-icons";
+import { MixerHorizontalIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -15,7 +15,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
@@ -33,6 +33,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Link from "next/link";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -72,6 +73,15 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="">
+      <div className="flex justify-center">
+        <Link
+          href="/leads/new"
+          className={buttonVariants({ variant: "default" })}
+        >
+          Add lead
+          <PlusCircledIcon className="ml-2" />
+        </Link>
+      </div>
       <div className="flex items-center justify-between py-2">
         <div className="flex flex-1 items-center space-x-2">
           <Input
