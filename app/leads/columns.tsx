@@ -73,6 +73,9 @@ export const columns: ColumnDef<Customer>[] = [
   {
     accessorKey: "responsible",
     header: "Responsible",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("responsible")}</div>
+    ),
   },
   {
     accessorKey: "quote",

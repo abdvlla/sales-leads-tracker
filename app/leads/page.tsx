@@ -2,20 +2,22 @@ import { columns, Customer } from "./columns";
 import { DataTable } from "./data-tables";
 import { Card } from "@/components/ui/card";
 import supabase from "@/utils/supabase";
+export const revalidate = 0;
 
 async function getData(): Promise<Customer[]> {
-  const { data, error } = await supabase.from("leads").select();
+  let { data: leads, error } = await supabase.from("leads").select("*");
 
   if (error) {
     console.error("Error fetching data:", error);
     return [];
   }
-  console.log("Fetched data:", data);
-  return data as Customer[];
+  return leads as Customer[];
 }
 
 export default async function Leads() {
   const data = await getData();
+
+  console.log("Number of rows fetched:", data.length);
 
   return (
     <div className="container max-w-6xl py-6">
