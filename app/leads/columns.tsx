@@ -56,7 +56,7 @@ export const columns: ColumnDef<Customer>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Name
-          <CaretSortIcon className="ml-2 h-4 w-4" />
+          <CaretSortIcon className="ml-1 h-4 w-4" />
         </Button>
       );
     },
@@ -81,24 +81,35 @@ export const columns: ColumnDef<Customer>[] = [
   },
   {
     accessorKey: "created_at",
-    header: "Opened",
+    header: ({ column }) => (
+      <div className="">
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className=""
+        >
+          Created <CaretSortIcon className="ml-1 h-4 w-4" />
+        </Button>
+      </div>
+    ),
     cell: ({ row }) => {
       const createdAt = parseISO(row.getValue("created_at"));
       const daysDifference = differenceInDays(new Date(), createdAt);
-      return <div>{daysDifference} days</div>;
+      return <div className=" font-medium">{daysDifference} days ago</div>;
     },
   },
+
   {
     accessorKey: "quote",
     header: ({ column }) => {
       return (
-        <div className="text-right">
+        <div className="">
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            className="text-right"
+            className=""
           >
-            Quote
+            Quote <CaretSortIcon className="ml-1 h-4 w-4" />
           </Button>
         </div>
       );
@@ -110,7 +121,7 @@ export const columns: ColumnDef<Customer>[] = [
         currency: "USD",
       }).format(quote);
 
-      return <div className="text-right font-medium">{formatted}</div>;
+      return <div className=" font-medium">{formatted}</div>;
     },
   },
   {
