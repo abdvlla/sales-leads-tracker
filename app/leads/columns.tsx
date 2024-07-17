@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CaretSortIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { differenceInDays, parseISO } from "date-fns";
 
 export type Customer = {
   id: string;
@@ -20,6 +21,7 @@ export type Customer = {
   name: string;
   quote: number;
   responsible: "craig" | "katie" | "mark";
+  created_at: string;
 };
 
 export const columns: ColumnDef<Customer>[] = [
@@ -76,6 +78,15 @@ export const columns: ColumnDef<Customer>[] = [
     cell: ({ row }) => (
       <div className="capitalize">{row.getValue("responsible")}</div>
     ),
+  },
+  {
+    accessorKey: "created_at",
+    header: "Opened",
+    cell: ({ row }) => {
+      const createdAt = parseISO(row.getValue("created_at"));
+      const daysDifference = differenceInDays(new Date(), createdAt);
+      return <div>{daysDifference} days</div>;
+    },
   },
   {
     accessorKey: "quote",

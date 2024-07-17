@@ -1,7 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { MixerHorizontalIcon, PlusCircledIcon } from "@radix-ui/react-icons";
+import {
+  MixerHorizontalIcon,
+  PlusCircledIcon,
+  GearIcon,
+} from "@radix-ui/react-icons";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -34,6 +38,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
+import { DataTablePagination } from "./components/data-table-pagination";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -51,6 +56,7 @@ export function DataTable<TData, TValue>({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const [statusFilter, setStatusFilter] = React.useState<string>("");
 
   const table = useReactTable({
     data,
@@ -70,6 +76,10 @@ export function DataTable<TData, TValue>({
       rowSelection,
     },
   });
+
+  React.useEffect(() => {
+    table.getColumn("status")?.setFilterValue(statusFilter);
+  }, [statusFilter]);
 
   return (
     <div className="">
@@ -94,12 +104,23 @@ export function DataTable<TData, TValue>({
           />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline">
-                Status <span className="sr-only">Filter by status</span>
+              <Button variant="outline" className="ml-auto">
+                Status <GearIcon className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem>View customer</DropdownMenuItem>
+            <DropdownMenuContent align="end">
+              {["pending", "processing", "success", "failed"].map((status) => (
+                <DropdownMenuCheckboxItem
+                  key={status}
+                  className="capitalize"
+                  checked={statusFilter === status}
+                  onCheckedChange={(value) =>
+                    setStatusFilter(value ? status : "")
+                  }
+                >
+                  {status}
+                </DropdownMenuCheckboxItem>
+              ))}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -180,30 +201,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
-      </div>
+      <DataTablePagination table={table} />
     </div>
   );
 }
