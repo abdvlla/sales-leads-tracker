@@ -52,7 +52,6 @@ export const columns: ColumnDef<Customer>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-
   {
     accessorKey: "name",
     header: ({ column }) => (
@@ -60,7 +59,7 @@ export const columns: ColumnDef<Customer>[] = [
     ),
     cell: ({ row }) => (
       <div className="flex space-x-2">
-        <span className="">{row.getValue("name")}</span>
+        <span>{row.getValue("name")}</span>
       </div>
     ),
   },
@@ -98,7 +97,7 @@ export const columns: ColumnDef<Customer>[] = [
     ),
     cell: ({ row }) => (
       <div className="flex space-x-2">
-        <span className="">{row.getValue("email")}</span>
+        <span>{row.getValue("email")}</span>
       </div>
     ),
   },
@@ -126,7 +125,6 @@ export const columns: ColumnDef<Customer>[] = [
       return value.includes(row.getValue(id));
     },
   },
-
   {
     accessorKey: "created_at",
     header: ({ column }) => (
@@ -137,12 +135,11 @@ export const columns: ColumnDef<Customer>[] = [
       const daysDifference = differenceInDays(new Date(), createdAt);
       return (
         <div className="flex space-x-2">
-          <span className="">{daysDifference} days ago</span>
+          <span>{daysDifference} days ago</span>
         </div>
       );
     },
   },
-
   {
     accessorKey: "quote",
     header: ({ column }) => (
@@ -156,16 +153,15 @@ export const columns: ColumnDef<Customer>[] = [
       }).format(quote);
       return (
         <div className="flex space-x-2">
-          <span className="">{formatted}</span>
+          <span>{formatted}</span>
         </div>
       );
     },
   },
-
   {
     id: "actions",
     cell: ({ row }) => {
-      const lead = row.original;
+      const lead = row.original as Customer;
 
       return (
         <DropdownMenu>
@@ -184,11 +180,9 @@ export const columns: ColumnDef<Customer>[] = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View</DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link href="/leads/:id">Update</Link>
+            <DropdownMenuItem asChild>
+              <Link href={`/leads/${lead.id}/edit`}>Edit</Link>
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { columns, Customer } from "./components/columns";
 import { DataTable } from "./components/data-tables";
 import { Card } from "@/components/ui/card";
@@ -20,7 +21,7 @@ export default async function Leads() {
   console.log("Number of rows fetched:", data.length);
 
   return (
-    <div className="container max-w-6xl py-6">
+    <div className="container py-6">
       <Card className="p-4">
         <DataTable data={data} columns={columns} />
       </Card>
