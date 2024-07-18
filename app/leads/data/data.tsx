@@ -27,3 +27,18 @@ export const statuses = [
     icon: Cross2Icon,
   },
 ];
+
+export const responsibles = [
+  {
+    value: "craig",
+    label: "Craig",
+  },
+  {
+    value: "katie",
+    label: "Katie",
+  },
+  {
+    value: "mark",
+    label: "Mark",
+  },
+];

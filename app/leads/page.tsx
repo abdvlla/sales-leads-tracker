@@ -1,5 +1,5 @@
-import { columns, Customer } from "./columns";
-import { DataTable } from "./data-tables";
+import { columns, Customer } from "./components/columns";
+import { DataTable } from "./components/data-tables";
 import { Card } from "@/components/ui/card";
 import supabase from "@/utils/supabase";
 export const revalidate = 0;
@@ -22,7 +22,7 @@ export default async function Leads() {
   return (
     <div className="container max-w-6xl py-6">
       <Card className="p-4">
-        <DataTable columns={columns} data={data} />
+        <DataTable data={data} columns={columns} />
       </Card>
     </div>
   );

@@ -11,18 +11,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CaretSortIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { differenceInDays, parseISO } from "date-fns";
-import { DataTableColumnHeader } from "./components/data-table-column-header";
-import { statuses } from "./data/data";
+import { DataTableColumnHeader } from "./data-table-column-header";
+import { responsibles, statuses } from "../data/data";
+import Link from "next/link";
 
 export type Customer = {
   id: string;
-  status: "viable" | "in progress" | "successful" | "canceled";
+  status: string;
   email: string;
   name: string;
   quote: number;
-  responsible: "craig" | "katie" | "mark";
+  responsible: string;
   created_at: string;
 };
 
@@ -106,11 +107,24 @@ export const columns: ColumnDef<Customer>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Responsible" />
     ),
-    cell: ({ row }) => (
-      <div className="flex space-x-2">
-        <span className="capitalize">{row.getValue("responsible")}</span>
-      </div>
-    ),
+    cell: ({ row }) => {
+      const responsible = responsibles.find(
+        (responsible) => responsible.value === row.getValue("responsible")
+      );
+
+      if (!responsible) {
+        return null;
+      }
+
+      return (
+        <div className="flex items-center">
+          <span>{responsible.label}</span>
+        </div>
+      );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
   },
 
   {
@@ -128,32 +142,6 @@ export const columns: ColumnDef<Customer>[] = [
       );
     },
   },
-
-  // {
-  //   accessorKey: "quote",
-  //   header: ({ column }) => {
-  //     return (
-  //       <div className="">
-  //         <Button
-  //           variant="ghost"
-  //           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //           className=""
-  //         >
-  //           Quote <CaretSortIcon className="ml-1 h-4 w-4" />
-  //         </Button>
-  //       </div>
-  //     );
-  //   },
-  //   cell: ({ row }) => {
-  //     const quote = parseFloat(row.getValue("quote"));
-  //     const formatted = new Intl.NumberFormat("en-US", {
-  //       style: "currency",
-  //       currency: "USD",
-  //     }).format(quote);
-
-  //     return <div className=" font-medium">{formatted}</div>;
-  //   },
-  // },
 
   {
     accessorKey: "quote",
@@ -177,7 +165,7 @@ export const columns: ColumnDef<Customer>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const payment = row.original;
+      const lead = row.original;
 
       return (
         <DropdownMenu>
@@ -190,14 +178,17 @@ export const columns: ColumnDef<Customer>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => navigator.clipboard.writeText(lead.email)}
             >
-              Copy row ID
+              Copy email
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>Update details</DropdownMenuItem>
-            <DropdownMenuItem>Delete lead</DropdownMenuItem>
+            <DropdownMenuItem>View</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href="/leads/:id">Update</Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

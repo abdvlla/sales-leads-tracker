@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import supabase from "@/utils/supabase";
-import { statuses } from "../data/data";
+import { responsibles, statuses } from "../data/data";
 
 const AddLeadPage: React.FC = () => {
   const [name, setName] = useState("");
@@ -102,9 +102,14 @@ const AddLeadPage: React.FC = () => {
                     <SelectValue placeholder="Select salesperson" />
                   </SelectTrigger>
                   <SelectContent position="popper">
-                    <SelectItem value="craig">Craig</SelectItem>
-                    <SelectItem value="katie">Katie</SelectItem>
-                    <SelectItem value="mark">Mark</SelectItem>
+                    {responsibles.map((responsibleOption) => (
+                      <SelectItem
+                        key={responsibleOption.value}
+                        value={responsibleOption.value}
+                      >
+                        {responsibleOption.label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
