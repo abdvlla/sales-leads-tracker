@@ -25,6 +25,7 @@ import { Textarea } from "@/components/ui/textarea";
 import supabase from "@/utils/supabase";
 import { responsibles, statuses } from "../../data/data";
 import { useToast } from "@/components/ui/use-toast";
+import EditLeadSkeleton from "../../components/card-form-skeleton";
 
 const EditLeadPage: React.FC = () => {
   const [name, setName] = useState("");
@@ -61,7 +62,7 @@ const EditLeadPage: React.FC = () => {
         setResponsible(data.responsible);
         setStatus(data.status);
         setQuote(data.quote);
-        setNotes(data.notes ?? ""); // Ensure notes is not null
+        setNotes(data.notes ?? "");
       }
     };
 
@@ -108,6 +109,10 @@ const EditLeadPage: React.FC = () => {
       });
     }
   };
+
+  if (loading) {
+    return <EditLeadSkeleton />;
+  }
 
   return (
     <Card className="my-8 mx-auto max-w-md">
