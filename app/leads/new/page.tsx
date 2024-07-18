@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import supabase from "@/utils/supabase";
+import { statuses } from "../data/data";
 
 const AddLeadPage: React.FC = () => {
   const [name, setName] = useState("");
@@ -114,10 +115,15 @@ const AddLeadPage: React.FC = () => {
                     <SelectValue placeholder="Select current status" />
                   </SelectTrigger>
                   <SelectContent position="popper">
-                    <SelectItem value="pending">Pending</SelectItem>
-                    <SelectItem value="processing">Processing</SelectItem>
-                    <SelectItem value="success">Success</SelectItem>
-                    <SelectItem value="failed">Failed</SelectItem>
+                    {statuses.map((statusOption) => (
+                      <SelectItem
+                        key={statusOption.value}
+                        value={statusOption.value}
+                      >
+                        <statusOption.icon className="mr-2 h-4 w-4 inline-block" />
+                        {statusOption.label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
