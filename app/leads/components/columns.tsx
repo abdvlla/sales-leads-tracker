@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { differenceInDays, parseISO } from "date-fns";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { responsibles, statuses } from "../data/data";
 import Link from "next/link";
@@ -131,15 +130,16 @@ export const columns: ColumnDef<Customer>[] = [
       <DataTableColumnHeader column={column} title="Created" />
     ),
     cell: ({ row }) => {
-      const createdAt = parseISO(row.getValue("created_at"));
-      const daysDifference = differenceInDays(new Date(), createdAt);
+      const date = new Date(row.getValue("created_at"));
+      const formattedDate = date.toISOString().split("T")[0];
       return (
         <div className="flex space-x-2">
-          <span>{daysDifference} days ago</span>
+          <span>{formattedDate}</span>
         </div>
       );
     },
   },
+
   {
     accessorKey: "quote",
     header: ({ column }) => (
