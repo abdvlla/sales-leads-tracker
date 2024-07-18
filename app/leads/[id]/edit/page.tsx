@@ -24,6 +24,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import supabase from "@/utils/supabase";
 import { responsibles, statuses } from "../../data/data";
+import { useToast } from "@/components/ui/use-toast";
 
 const EditLeadPage: React.FC = () => {
   const [name, setName] = useState("");
@@ -37,6 +38,7 @@ const EditLeadPage: React.FC = () => {
   const router = useRouter();
   const params = useParams();
   const { id } = params;
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchLead = async () => {
@@ -59,7 +61,7 @@ const EditLeadPage: React.FC = () => {
         setResponsible(data.responsible);
         setStatus(data.status);
         setQuote(data.quote);
-        setNotes(data.notes);
+        setNotes(data.notes ?? ""); // Ensure notes is not null
       }
     };
 
@@ -93,8 +95,17 @@ const EditLeadPage: React.FC = () => {
 
     if (error) {
       setError("Error updating lead: " + error.message);
+      toast({
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+        variant: "destructive",
+      });
     } else {
       router.push("/leads");
+      toast({
+        title: "Success!",
+        description: "Lead updated successfully.",
+      });
     }
   };
 

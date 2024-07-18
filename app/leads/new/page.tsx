@@ -24,6 +24,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import supabase from "@/utils/supabase";
 import { responsibles, statuses } from "../data/data";
+import { useToast } from "@/components/ui/use-toast";
 
 const AddLeadPage: React.FC = () => {
   const [name, setName] = useState("");
@@ -35,12 +36,13 @@ const AddLeadPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    if (!name || !email || !responsible || !status || quote === undefined) {
+    if (!name || !status) {
       setError("Please fill in all required fields.");
       return;
     }
@@ -60,8 +62,17 @@ const AddLeadPage: React.FC = () => {
 
     if (error) {
       setError("Error adding lead: " + error.message);
+      toast({
+        title: "Failed to add lead.",
+        description: "There was a problem with your request.",
+        variant: "destructive",
+      });
     } else {
       router.push("/leads");
+      toast({
+        title: "Success!",
+        description: "Lead created successfully.",
+      });
     }
   };
 
