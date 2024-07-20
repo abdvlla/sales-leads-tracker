@@ -15,6 +15,21 @@ import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { responsibles, statuses } from "../data/data";
 import Link from "next/link";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import supabase from "@/utils/supabase";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
+import { useState } from "react";
 
 export type Customer = {
   id: string;
@@ -24,6 +39,27 @@ export type Customer = {
   quote: number;
   responsible: string;
   created_at: string;
+};
+
+const handleDelete = async (customerId: string, router: any, toast: any) => {
+  const { error } = await supabase.from("leads").delete().eq("id", customerId);
+
+  if (error) {
+    console.error("Error deleting customer:", error);
+    toast({
+      title: "Uh oh! Something went wrong.",
+      description:
+        "There was a problem with your request. Failed to delete row.",
+      variant: "destructive",
+    });
+  } else {
+    console.log(`Customer with ID ${customerId} deleted successfully`);
+    router.refresh();
+    toast({
+      title: "Success!",
+      description: "Row deleted successfully.",
+    });
+  }
 };
 
 export const columns: ColumnDef<Customer>[] = [
@@ -161,30 +197,62 @@ export const columns: ColumnDef<Customer>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const lead = row.original as Customer;
+      const customer = row.original as Customer;
+      const router = useRouter();
+      const { toast } = useToast();
+
+      const [showDropdownMenu, setShowDropdownMenu] = useState(false);
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <DotsHorizontalIcon className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(lead.email)}
-            >
-              Copy email
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View</DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href={`/leads/${lead.id}/edit`}>Edit</Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <AlertDialog onOpenChange={(change) => setShowDropdownMenu(change)}>
+          <DropdownMenu
+            open={showDropdownMenu}
+            onOpenChange={(change) => setShowDropdownMenu(change)}
+          >
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <DotsHorizontalIcon className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={() => navigator.clipboard.writeText(customer.email)}
+              >
+                Copy email
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>View</DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href={`/leads/${customer.id}/edit`}>Edit</Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <AlertDialogTrigger asChild>
+                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                  Delete
+                </DropdownMenuItem>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete
+                    the lead and remove their data from the servers.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() => handleDelete(customer.id, router, toast)}
+                  >
+                    Continue
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </AlertDialog>
       );
     },
   },
