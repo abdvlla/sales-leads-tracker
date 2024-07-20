@@ -1,6 +1,5 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,11 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Checkbox } from "@/components/ui/checkbox";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { DataTableColumnHeader } from "./data-table-column-header";
-import { responsibles, statuses } from "../data/data";
-import Link from "next/link";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -29,7 +24,6 @@ import {
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -38,6 +32,7 @@ import supabase from "@/utils/supabase";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
+import Link from "next/link";
 
 export type Customer = {
   id: string;
@@ -141,140 +136,4 @@ const ActionsCell = ({ customer }: { customer: Customer }) => {
   );
 };
 
-export const columns: ColumnDef<Customer>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-        className="translate-y-[2px]"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        className="translate-y-[2px]"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Name" />
-    ),
-    cell: ({ row }) => (
-      <div className="flex space-x-2">
-        <span>{row.getValue("name")}</span>
-      </div>
-    ),
-  },
-  {
-    accessorKey: "status",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
-    ),
-    cell: ({ row }) => {
-      const status = statuses.find(
-        (status) => status.value === row.getValue("status")
-      );
-
-      if (!status) {
-        return null;
-      }
-
-      return (
-        <div className="flex w-[100px] items-center">
-          {status.icon && (
-            <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-          )}
-          <span>{status.label}</span>
-        </div>
-      );
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-  },
-  {
-    accessorKey: "email",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Email" />
-    ),
-    cell: ({ row }) => (
-      <div className="flex space-x-2">
-        <span>{row.getValue("email")}</span>
-      </div>
-    ),
-  },
-  {
-    accessorKey: "responsible",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Responsible" />
-    ),
-    cell: ({ row }) => {
-      const responsible = responsibles.find(
-        (responsible) => responsible.value === row.getValue("responsible")
-      );
-
-      if (!responsible) {
-        return null;
-      }
-
-      return (
-        <div className="flex items-center">
-          <span>{responsible.label}</span>
-        </div>
-      );
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-  },
-  {
-    accessorKey: "created_at",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Created" />
-    ),
-    cell: ({ row }) => {
-      const date = new Date(row.getValue("created_at"));
-      const formattedDate = date.toISOString().split("T")[0];
-      return (
-        <div className="flex space-x-2">
-          <span>{formattedDate}</span>
-        </div>
-      );
-    },
-  },
-
-  {
-    accessorKey: "quote",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Quote" />
-    ),
-    cell: ({ row }) => {
-      const quote = parseFloat(row.getValue("quote"));
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(quote);
-      return (
-        <div className="flex space-x-2">
-          <span>{formatted}</span>
-        </div>
-      );
-    },
-  },
-  {
-    id: "actions",
-    cell: ({ row }) => <ActionsCell customer={row.original as Customer} />,
-  },
-];
+export default ActionsCell;
