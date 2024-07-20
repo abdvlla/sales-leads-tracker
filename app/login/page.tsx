@@ -1,4 +1,3 @@
-import { login } from "./action";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -48,16 +47,11 @@ export default function LoginPage() {
                   required
                 />
               </div>
-              <Button formAction={login} className="mx-auto">
-                Sign in
-              </Button>
             </div>
           </form>
         </CardContent>
         <CardFooter className="flex justify-between">
-          {/* <Button formAction={login} className="mx-auto">
-            Sign in
-          </Button> */}
+          <Button className="mx-auto">Sign in</Button>
         </CardFooter>
       </Card>
     </div>
