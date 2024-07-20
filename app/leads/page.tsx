@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
 import { columns, Customer } from "./components/columns";
 import { DataTable } from "./components/data-tables";
 import { Card } from "@/components/ui/card";
 import supabase from "@/utils/supabase";
+
 export const revalidate = 0;
 
 async function getData(): Promise<Customer[]> {
@@ -12,6 +12,7 @@ async function getData(): Promise<Customer[]> {
     console.error("Error fetching data:", error);
     return [];
   }
+
   return leads as Customer[];
 }
 

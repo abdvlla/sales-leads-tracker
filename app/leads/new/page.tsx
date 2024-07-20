@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,6 +24,7 @@ import { Textarea } from "@/components/ui/textarea";
 import supabase from "@/utils/supabase";
 import { responsibles, statuses } from "../data/data";
 import { useToast } from "@/components/ui/use-toast";
+import { revalidateLeads } from "@/app/action";
 
 const AddLeadPage: React.FC = () => {
   const [name, setName] = useState("");
@@ -68,6 +68,7 @@ const AddLeadPage: React.FC = () => {
         variant: "destructive",
       });
     } else {
+      await revalidateLeads();
       router.push("/leads");
       toast({
         title: "Success!",

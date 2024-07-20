@@ -26,6 +26,7 @@ import supabase from "@/utils/supabase";
 import { responsibles, statuses } from "../../data/data";
 import { useToast } from "@/components/ui/use-toast";
 import EditLeadSkeleton from "../../components/card-form-skeleton";
+import { revalidateLeads } from "@/app/action";
 
 const EditLeadPage: React.FC = () => {
   const [name, setName] = useState("");
@@ -102,6 +103,7 @@ const EditLeadPage: React.FC = () => {
         variant: "destructive",
       });
     } else {
+      revalidateLeads();
       router.push("/leads");
       toast({
         title: "Success!",
