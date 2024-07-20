@@ -77,6 +77,11 @@ export function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
           </NavigationMenuItem>
+          <NavigationMenuItem>
+            <form action="/auth/signout" method="post">
+              <Button variant="ghost">Sign out</Button>
+            </form>
+          </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
     </div>
