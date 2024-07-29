@@ -8,7 +8,6 @@ import {
 } from "./ui/card";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
-import { signIn } from "@/auth";
 import { Button } from "./ui/button";
 
 export default function LoginForm() {
@@ -21,12 +20,7 @@ export default function LoginForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form
-          action={async (formData) => {
-            "use server";
-            await signIn("credentials", formData);
-          }}
-        >
+        <form>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="email">Username</Label>

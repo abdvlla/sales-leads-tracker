@@ -13,7 +13,6 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import Link from "next/link";
-import { signOut } from "@/auth";
 import ThemeSelect from "./theme-select";
 
 export function Navbar() {
@@ -50,12 +49,7 @@ export function Navbar() {
             <ThemeSelect />
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <form
-              action={async () => {
-                "use server";
-                await signOut();
-              }}
-            >
+            <form>
               <Button variant="ghost">Sign out</Button>
             </form>
           </NavigationMenuItem>
