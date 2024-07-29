@@ -113,7 +113,10 @@ const ActionsCell = ({ customer }: { customer: Customer }) => {
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <AlertDialogTrigger asChild>
-              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+              <DropdownMenuItem
+                className="text-red-500 font-semibold"
+                onSelect={(e) => e.preventDefault()}
+              >
                 Delete
               </DropdownMenuItem>
             </AlertDialogTrigger>
