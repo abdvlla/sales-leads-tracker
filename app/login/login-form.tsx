@@ -5,10 +5,11 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "./ui/card";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+} from "../../components/ui/card";
+import { Label } from "../../components/ui/label";
+import { Input } from "../../components/ui/input";
+import { Button } from "../../components/ui/button";
+import { login } from "./actions";
 
 export default function LoginForm() {
   return (
@@ -40,12 +41,12 @@ export default function LoginForm() {
                 type="password"
                 placeholder="Enter password"
                 required
-                minLength={6}
+                minLength={4}
               />
             </div>
           </div>
-          <div className="flex justify-center py-5">
-            <Button>Sign In</Button>
+          <div className="flex space-x-2 justify-center py-5">
+            <Button formAction={login}>Log In</Button>
           </div>
         </form>
       </CardContent>

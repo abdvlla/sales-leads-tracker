@@ -49,8 +49,10 @@ export function Navbar() {
             <ThemeSelect />
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <form>
-              <Button variant="ghost">Sign out</Button>
+            <form action="/auth/signout" method="post">
+              <Button type="submit" variant="ghost">
+                Sign out
+              </Button>
             </form>
           </NavigationMenuItem>
         </NavigationMenuList>
