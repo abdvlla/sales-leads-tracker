@@ -14,8 +14,13 @@ import {
 } from "@/components/ui/navigation-menu";
 import Link from "next/link";
 import ThemeSelect from "./theme-select";
+import { createClient } from "@/utils/supabase/server";
 
-export function Navbar() {
+export async function Navbar() {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   return (
     <div className="flex justify-between border-b dark:border-gray-600 p-1.5 bg-opacity-95">
       <NavigationMenu>
@@ -48,13 +53,21 @@ export function Navbar() {
           <NavigationMenuItem>
             <ThemeSelect />
           </NavigationMenuItem>
-          <NavigationMenuItem>
-            <form action="/auth/signout" method="post">
-              <Button type="submit" variant="ghost">
-                Sign out
+          {user ? (
+            <NavigationMenuItem>
+              <form action="/auth/signout" method="post">
+                <Button type="submit" variant="ghost">
+                  Sign out
+                </Button>
+              </form>
+            </NavigationMenuItem>
+          ) : (
+            <NavigationMenuItem>
+              <Button asChild type="submit" variant="ghost">
+                <Link href="/login">Sign in</Link>
               </Button>
-            </form>
-          </NavigationMenuItem>
+            </NavigationMenuItem>
+          )}
         </NavigationMenuList>
       </NavigationMenu>
     </div>
