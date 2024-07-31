@@ -1,24 +1,12 @@
 import { columns } from "./components/columns";
 import { DataTable } from "./components/data-tables";
 import { Card } from "@/components/ui/card";
-import supabase from "@/utils/supabase";
-import { Customer } from "../lib/definitions";
+import { fetchLeads } from "../lib/data";
 
 export const revalidate = 0;
 
-async function getData(): Promise<Customer[]> {
-  let { data: leads, error } = await supabase.from("leads").select("*");
-
-  if (error) {
-    console.error("Error fetching data:", error);
-    return [];
-  }
-
-  return leads as Customer[];
-}
-
 export default async function Leads() {
-  const data = await getData();
+  const data = await fetchLeads();
 
   console.log("Number of rows fetched:", data.length);
 
