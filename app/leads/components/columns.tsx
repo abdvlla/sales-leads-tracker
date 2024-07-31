@@ -29,7 +29,6 @@ import {
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -38,17 +37,7 @@ import supabase from "@/utils/supabase";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
-
-export type Customer = {
-  id: string;
-  status: string;
-  email: string;
-  name: string;
-  quote: number;
-  responsible: string;
-  created_at: string;
-  notes?: string;
-};
+import { Customer } from "@/app/lib/definitions";
 
 const handleDelete = async (customerId: string, router: any, toast: any) => {
   const { error } = await supabase.from("leads").delete().eq("id", customerId);
