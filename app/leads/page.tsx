@@ -1,7 +1,8 @@
-import { columns, Customer } from "./components/columns";
+import { columns } from "./components/columns";
 import { DataTable } from "./components/data-tables";
 import { Card } from "@/components/ui/card";
 import supabase from "@/utils/supabase";
+import { Customer } from "../lib/definitions";
 
 export const revalidate = 0;
 
