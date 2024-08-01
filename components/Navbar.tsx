@@ -15,6 +15,15 @@ import {
 import Link from "next/link";
 import ThemeSelect from "./theme-select";
 import { createClient } from "@/utils/supabase/server";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 export async function Navbar() {
   const supabase = createClient();
@@ -23,53 +32,67 @@ export async function Navbar() {
   } = await supabase.auth.getUser();
   return (
     <div className="flex justify-between border-b dark:border-gray-600 p-1.5 bg-opacity-95">
-      <NavigationMenu>
-        <NavigationMenuList className="container max-w-xl">
-          <NavigationMenuItem className="flex">
-            <Link href="/" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                Dashboard
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <NavigationMenuTrigger>Leads</NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                <ListItem href="/leads" title="Leads">
-                  Table of customers. All potential and past leads.
-                </ListItem>
-                <ListItem href="/leads/new" title="Add lead">
-                  Add a new sales lead to the table. Modify at any time from
-                  table.
-                </ListItem>
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-        </NavigationMenuList>
-      </NavigationMenu>
-      <NavigationMenu>
-        <NavigationMenuList className="flex container">
-          <NavigationMenuItem>
-            <ThemeSelect />
-          </NavigationMenuItem>
-          {user ? (
+      <DropdownMenu>
+        <NavigationMenu>
+          <NavigationMenuList className="container max-w-xl">
+            <NavigationMenuItem className="flex">
+              <Link href="/" legacyBehavior passHref>
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  Dashboard
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
             <NavigationMenuItem>
-              <form action="/auth/signout" method="post">
-                <Button type="submit" variant="ghost">
-                  Sign out
+              <NavigationMenuTrigger>Leads</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+                  <ListItem href="/leads" title="Leads">
+                    Table of customers. All potential and past leads.
+                  </ListItem>
+                  <ListItem href="/leads/new" title="Add lead">
+                    Add a new sales lead to the table. Modify at any time from
+                    table.
+                  </ListItem>
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
+        <NavigationMenu>
+          <NavigationMenuList className="flex container">
+            <NavigationMenuItem>
+              <ThemeSelect />
+            </NavigationMenuItem>
+            {user ? (
+              <div>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline">Account</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem asChild>
+                      <Link href={"/account"}>Profile</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <form action="/auth/signout" method="post">
+                        <button className="w-full text-left">Sign out</button>
+                      </form>
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </div>
+            ) : (
+              <NavigationMenuItem>
+                <Button asChild type="submit" variant="ghost">
+                  <Link href="/login">Sign in</Link>
                 </Button>
-              </form>
-            </NavigationMenuItem>
-          ) : (
-            <NavigationMenuItem>
-              <Button asChild type="submit" variant="ghost">
-                <Link href="/login">Sign in</Link>
-              </Button>
-            </NavigationMenuItem>
-          )}
-        </NavigationMenuList>
-      </NavigationMenu>
+              </NavigationMenuItem>
+            )}
+          </NavigationMenuList>
+        </NavigationMenu>
+      </DropdownMenu>
     </div>
   );
 }
