@@ -14,3 +14,18 @@ export async function fetchLeads(): Promise<Customer[]> {
     }
   
   }
+
+  export async function fetchLead(id: string): Promise<Customer | null> {
+    try {
+        let { data: lead } = await supabase
+            .from("leads")
+            .select("*")
+            .eq("id", id)
+            .single(); 
+
+        return lead as Customer | null;
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        throw new Error('Failed to fetch lead data.');
+    }
+}

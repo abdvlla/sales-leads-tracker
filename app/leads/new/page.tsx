@@ -1,14 +1,14 @@
 import { Metadata } from "next";
-import CreateForm from "./create-form";
+import LeadForm from "./lead-form";
 
 export const metadata: Metadata = {
   title: "Create Lead",
 };
 
-export default async function Page() {
+export default async function Add() {
   return (
     <main>
-      <CreateForm />
+      <LeadForm />
     </main>
   );
 }
