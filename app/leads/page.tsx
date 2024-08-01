@@ -11,7 +11,8 @@ export default async function Leads() {
   console.log("Number of rows fetched:", data.length);
 
   return (
-    <div className="container py-6">
+    <div className="flex-1 space-y-4 p-8 pt-6">
+      <h2 className="text-3xl font-bold tracking-tight ">Leads table</h2>
       <Card className="p-4">
         <DataTable data={data} columns={columns} />
       </Card>

@@ -56,7 +56,55 @@ export async function fetchAllLeadsCount() {
 
         return count;
     } catch (error) {
-        console.error("Error fetching count:", error);
+        console.error("Error fetching count of last 14 days:", error);
+        throw new Error('Failed to fetch count of leads in last 14 days.');
+    }
+}
+
+export async function fetchTotalLeadsCount() {
+    try {
+        let { count } = await supabase
+            .from("leads")
+            .select('*', { count: 'exact', head: true });
+
+        return count;
+    } catch (error) {
+        console.error("Error fetching count of all leads:", error);
         throw new Error('Failed to fetch count of leads.');
+    }
+}
+
+export async function fetchTotalQuotesSum() {
+    try {
+        let { data } = await supabase
+            .from("leads")
+            .select("quote", { count: "exact", head: false });
+
+
+
+        const totalSum = (data ?? []).reduce((sum, lead) => sum + (lead.quote || 0), 0);
+        return totalSum;
+    } catch (error) {
+        console.error("Error fetching total quotes sum:", error);
+        throw new Error('Failed to fetch total quotes sum.');
+    }
+}
+
+// Fetch the sum of quotes from leads added in the last 14 days
+export async function fetchRecentQuotesSum() {
+    try {
+        const fromDate = new Date();
+        fromDate.setDate(fromDate.getDate() - 14);
+        
+        let { data } = await supabase
+            .from("leads")
+            .select("quote", { count: "exact", head: false })
+            .gte("created_at", fromDate.toISOString());
+
+        const recentSum = (data ?? []).reduce((sum, lead) => sum + (lead.quote || 0), 0);
+        return recentSum;
+    } catch (error) {
+        console.error("Error fetching recent quotes sum:", error);
+        throw new Error('Failed to fetch recent quotes sum.');
     }
 }
