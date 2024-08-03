@@ -5,6 +5,10 @@ import {
   fetchRecentQuotesSum,
   fetchTotalLeadsCount,
   fetchTotalQuotesSum,
+  fetchSuccessfulLeadsCount,
+  fetchSuccessfulRecentLeadsCount,
+  fetchProgressLeadsCount,
+  fetchProgressRecentLeadsCount,
 } from "../lib/data";
 
 export default async function StatsCards() {
@@ -12,12 +16,16 @@ export default async function StatsCards() {
   const totalLeadCount = (await fetchTotalLeadsCount()) ?? 0;
   const totalQuotesSum = await fetchTotalQuotesSum();
   const recentQuotesSum = await fetchRecentQuotesSum();
+  const successfulCounts = (await fetchSuccessfulLeadsCount()) ?? 0;
+  const recentSuccessfulCounts = (await fetchSuccessfulRecentLeadsCount()) ?? 0;
+  const pendingCounts = (await fetchProgressLeadsCount()) ?? 0;
+  const recentPendingCounts = (await fetchProgressRecentLeadsCount()) ?? 0;
 
   function percentageIncrease(recent: number, older: number) {
     if (older === 0) {
       return recent > 0 ? "100%" : "0%";
     }
-    let increase = ((recent - older) / older) * 100;
+    let increase = (recent / older) * 100;
     return increase.toFixed(1) + "%";
   }
 
@@ -104,9 +112,14 @@ export default async function StatsCards() {
           </svg>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">181</div>
+          <div className="text-2xl font-bold">{successfulCounts}</div>
           <p className="text-xs text-muted-foreground">
-            +19% in the last 14 days
+            +
+            {percentageIncrease(
+              recentSuccessfulCounts,
+              successfulCounts - recentSuccessfulCounts
+            )}{" "}
+            in the last 14 days
           </p>
         </CardContent>
       </Card>
@@ -127,9 +140,14 @@ export default async function StatsCards() {
           </svg>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">211</div>
+          <div className="text-2xl font-bold">{pendingCounts}</div>
           <p className="text-xs text-muted-foreground">
-            +201% in the last 14 days
+            +
+            {percentageIncrease(
+              recentPendingCounts,
+              pendingCounts - recentPendingCounts
+            )}{" "}
+            in the last 14 days
           </p>
         </CardContent>
       </Card>

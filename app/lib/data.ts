@@ -108,3 +108,65 @@ export async function fetchRecentQuotesSum() {
         throw new Error('Failed to fetch recent quotes sum.');
     }
 }
+
+export async function fetchSuccessfulLeadsCount() {
+    try {
+        let { count } = await supabase
+            .from("leads")
+            .select('*', { count: 'exact', head: true }).eq('status', 'successful');
+
+        return count;
+    } catch (error) {
+        console.error("Error fetching count of all leads with a successful status:", error);
+        throw new Error('Failed to fetch count of leads.');
+    }
+}
+
+export async function fetchSuccessfulRecentLeadsCount() {
+    const fromDate = new Date();
+    fromDate.setDate(fromDate.getDate() - 14);
+
+    try {
+        let { count } = await supabase
+            .from("leads")
+            .select('*', { count: 'exact', head: true })
+            .eq('status', 'successful')
+            .gte('created_at', fromDate.toISOString());
+
+        return count;
+    } catch (error) {
+        console.error("Error fetching count of recent successful leads:", error);
+        throw new Error('Failed to fetch count of leads.');
+    }
+}
+
+export async function fetchProgressLeadsCount() {
+    try {
+        let { count } = await supabase
+            .from("leads")
+            .select('*', { count: 'exact', head: true }).eq('status', 'in progress');
+
+        return count;
+    } catch (error) {
+        console.error("Error fetching count of all leads with a pending status:", error);
+        throw new Error('Failed to fetch count of leads.');
+    }
+}
+
+export async function fetchProgressRecentLeadsCount() {
+    const fromDate = new Date();
+    fromDate.setDate(fromDate.getDate() - 14);
+
+    try {
+        let { count } = await supabase
+            .from("leads")
+            .select('*', { count: 'exact', head: true })
+            .eq('status', 'in progress')
+            .gte('created_at', fromDate.toISOString());
+
+        return count;
+    } catch (error) {
+        console.error("Error fetching count of recent pending leads:", error);
+        throw new Error('Failed to fetch count of leads.');
+    }
+}
