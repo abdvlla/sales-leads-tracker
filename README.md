@@ -1,3 +1,10 @@
+Dashboard and table for sales leads to view and manage potential leads. Created with Supabase (PostgreSQL) as database and shadcn/ui.
+
+![salesleadss](https://github.com/user-attachments/assets/b72df6e5-214b-4103-b830-7cbb34dd5573)
+
+
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
