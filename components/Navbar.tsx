@@ -31,7 +31,7 @@ export async function Navbar() {
     data: { user },
   } = await supabase.auth.getUser();
   return (
-    <div className="flex justify-between border-b dark:border-gray-600 p-1.5 bg-opacity-95">
+    <div className="flex justify-between border-b dark:border-gray-600 p-2 bg-opacity-95">
       <DropdownMenu>
         <NavigationMenu>
           <NavigationMenuList className="container max-w-xl">
