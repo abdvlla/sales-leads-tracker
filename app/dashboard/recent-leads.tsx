@@ -1,7 +1,15 @@
 import React from "react";
 import { fetchLatestLeads } from "../lib/data";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { fetchAllLeadsCount } from "../lib/data";
 
-export default async function RecentLeads() {
+export async function RecentLeads() {
   const data = await fetchLatestLeads();
 
   if (!data || data.length === 0) {
@@ -27,5 +35,22 @@ export default async function RecentLeads() {
         </div>
       ))}
     </div>
+  );
+}
+
+export default function RecentLeadsCard() {
+  const last14DaysLeadCount = fetchAllLeadsCount();
+  return (
+    <Card className="col-span-3">
+      <CardHeader>
+        <CardTitle>Recent Leads</CardTitle>
+        <CardDescription>
+          You added {last14DaysLeadCount} leads in the last 14 days.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <RecentLeads />
+      </CardContent>
+    </Card>
   );
 }

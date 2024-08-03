@@ -38,6 +38,7 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
 import { Customer } from "@/app/lib/definitions";
+import { Badge } from "@/components/ui/badge";
 
 const handleDelete = async (customerId: string, router: any, toast: any) => {
   const { error } = await supabase.from("leads").delete().eq("id", customerId);
@@ -223,7 +224,7 @@ export const columns: ColumnDef<Customer>[] = [
 
       return (
         <div className="flex items-center">
-          <span>{responsible.label}</span>
+          <Badge>{responsible.label}</Badge>
         </div>
       );
     },
