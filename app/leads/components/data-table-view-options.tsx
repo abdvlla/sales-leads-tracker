@@ -1,6 +1,6 @@
 "use client";
 
-import { MixerHorizontalIcon } from "@radix-ui/react-icons";
+import { MixerHorizontalIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
@@ -24,7 +24,10 @@ export function DataTableViewOptions<TData>({
   return (
     <>
       <Button asChild size="sm" className="ml-auto mr-2 hidden h-8 lg:flex">
-        <Link href="/leads/new">Add lead</Link>
+        <Link href="/leads/new">
+          <PlusCircledIcon className="mr-1.5 h-4 w-4" />
+          Add lead
+        </Link>
       </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

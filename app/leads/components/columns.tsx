@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { DotsHorizontalIcon, ClipboardCopyIcon } from "@radix-ui/react-icons";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { responsibles, statuses } from "../data/data";
 import Link from "next/link";
@@ -82,9 +82,15 @@ const ActionsCell = ({ customer }: { customer: Customer }) => {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(customer.email)}
+              onClick={() => {
+                navigator.clipboard.writeText(customer.email);
+                toast({
+                  description: "Email copied to your clipboard.",
+                });
+              }}
             >
               Copy email
+              <ClipboardCopyIcon className="ml-2" />
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <SheetTrigger asChild>

@@ -1,7 +1,7 @@
 import {
   CheckIcon,
   Cross2Icon,
-  QuestionMarkCircledIcon,
+  QuestionMarkIcon,
   StopwatchIcon,
 } from "@radix-ui/react-icons";
 
@@ -9,7 +9,7 @@ export const statuses = [
   {
     value: "viable",
     label: "Viable",
-    icon: QuestionMarkCircledIcon,
+    icon: QuestionMarkIcon,
   },
   {
     value: "in progress",
