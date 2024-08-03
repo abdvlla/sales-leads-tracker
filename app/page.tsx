@@ -3,6 +3,12 @@ import { redirect } from "next/navigation";
 import StatsCards from "./dashboard/stats-cards";
 import RecentLeadsCard from "./dashboard/recent-leads";
 import OverviewCard from "./dashboard/overview-card";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "View important statistics",
+};
 
 export default async function Home() {
   const supabase = createClient();

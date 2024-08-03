@@ -2,6 +2,12 @@ import React from "react";
 import LeadForm from "../../new/lead-form";
 import { fetchLead } from "@/app/lib/data";
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Edit lead",
+  description: "Make changes to lead information",
+};
 
 type EditProps = {
   params: { id: string };

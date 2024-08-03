@@ -8,6 +8,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { fetchLeads } from "../lib/data";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Table",
+  description: "View all leads and manage",
+};
 
 export const revalidate = 0;
 
