@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { DatePickerWithRange } from "./data-table-date-picker";
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>;
@@ -29,12 +30,13 @@ export function DataTableViewOptions<TData>({
           Add lead
         </Link>
       </Button>
+      <DatePickerWithRange />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
             variant="outline"
             size="sm"
-            className="ml-auto hidden h-8 lg:flex"
+            className="hidden h-8 lg:flex ml-2"
           >
             <MixerHorizontalIcon className="mr-2 h-4 w-4" />
             View
