@@ -1,40 +1,39 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Cross1Icon } from "@radix-ui/react-icons";
 import React from "react";
-import {
-  fetchAllLeadsCount,
-  fetchRecentQuotesSum,
-  fetchTotalLeadsCount,
-  fetchTotalQuotesSum,
-  fetchSuccessfulLeadsCount,
-  fetchSuccessfulRecentLeadsCount,
-  fetchProgressLeadsCount,
-  fetchProgressRecentLeadsCount,
-} from "../lib/data";
+import { fetchLeadsCount, fetchQuotesSum } from "../lib/data";
 
 export default async function StatsCards() {
-  const last14DaysLeadCount = (await fetchAllLeadsCount()) ?? 0;
-  const totalLeadCount = (await fetchTotalLeadsCount()) ?? 0;
-  const totalQuotesSum = await fetchTotalQuotesSum();
-  const recentQuotesSum = await fetchRecentQuotesSum();
-  const successfulCounts = (await fetchSuccessfulLeadsCount()) ?? 0;
-  const recentSuccessfulCounts = (await fetchSuccessfulRecentLeadsCount()) ?? 0;
-  const pendingCounts = (await fetchProgressLeadsCount()) ?? 0;
-  const recentPendingCounts = (await fetchProgressRecentLeadsCount()) ?? 0;
+  const last14DaysLeadCount = await fetchLeadsCount(14);
+  const totalLeadCount = await fetchLeadsCount();
+
+  const totalQuotesSum = await fetchQuotesSum();
+  const recentQuotesSum = await fetchQuotesSum(14);
+
+  const successfulCounts = await fetchLeadsCount(undefined, "successful");
+  const recentSuccessfulCounts = await fetchLeadsCount(14, "successful");
+
+  const pendingCounts = await fetchLeadsCount(undefined, "in progress");
+  const recentPendingCounts = await fetchLeadsCount(14, "in progress");
+
+  const canceledCounts = await fetchLeadsCount(undefined, "canceled");
+  const recentCanceledCounts = await fetchLeadsCount(14, "canceled");
 
   function percentageIncrease(recent: number, older: number) {
     if (older === 0) {
       return recent > 0 ? "100%" : "0%";
     }
-    let increase = (recent / older) * 100;
-    return increase.toFixed(1) + "%";
+    let increase = ((recent - older) / older) * 100;
+    return (increase + 100).toFixed(1) + "%";
   }
 
   const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
   });
+
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">
@@ -146,6 +145,23 @@ export default async function StatsCards() {
             {percentageIncrease(
               recentPendingCounts,
               pendingCounts - recentPendingCounts
+            )}{" "}
+            in the last 14 days
+          </p>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Canceled</CardTitle>
+          <Cross1Icon />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{canceledCounts}</div>
+          <p className="text-xs text-muted-foreground">
+            +
+            {percentageIncrease(
+              recentCanceledCounts,
+              canceledCounts - recentCanceledCounts
             )}{" "}
             in the last 14 days
           </p>
