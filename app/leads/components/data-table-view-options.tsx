@@ -30,14 +30,10 @@ export function DataTableViewOptions<TData>({
           Add lead
         </Link>
       </Button>
-      <DatePickerWithRange />
+      {/* <DatePickerWithRange /> */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button
-            variant="outline"
-            size="sm"
-            className="hidden h-8 lg:flex ml-2"
-          >
+          <Button variant="outline" size="sm" className="hidden h-8 lg:flex">
             <MixerHorizontalIcon className="mr-2 h-4 w-4" />
             View
           </Button>
