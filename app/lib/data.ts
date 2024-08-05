@@ -34,7 +34,7 @@ export async function fetchLatestLeads(): Promise<Customer[] | null> {
     try {
         let { data: leads } = await supabase
             .from("leads")
-            .select("*")
+            .select("name, email, quote")
             .order("created_at", { ascending: false })
             .limit(5);
 
@@ -170,3 +170,32 @@ export async function fetchProgressRecentLeadsCount() {
         throw new Error('Failed to fetch count of leads.');
     }
 }
+
+export async function fetchRecentLeadsData() {
+    try {
+        const fromDate = new Date();
+        fromDate.setDate(fromDate.getDate() - 14);
+
+        let { data, count } = await supabase
+            .from("leads")
+            .select("quote, status", { count: "exact", head: true })
+            .gte('created_at', fromDate.toISOString());
+
+        if (!data) return null;
+
+        const recentQuotesSum = data.reduce((sum, lead) => sum + (lead.quote || 0), 0);
+        const successfulCount = data.filter(lead => lead.status === 'successful').length;
+        const progressCount = data.filter(lead => lead.status === 'in progress').length;
+
+        return {
+            recentQuotesSum,
+            successfulCount,
+            progressCount,
+            leadCount: count,
+        };
+    } catch (error) {
+        console.error("Error fetching recent leads data:", error);
+        throw new Error('Failed to fetch recent leads data.');
+    }
+}
+
